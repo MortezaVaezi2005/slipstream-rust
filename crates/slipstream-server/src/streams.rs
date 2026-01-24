@@ -52,11 +52,8 @@ pub(crate) struct ServerStreamMetrics {
 }
 
 impl ServerStreamMetrics {
-    pub(crate) fn has_backlog(&self) -> bool {
-        self.queued_bytes_total > 0
-            || self.pending_chunks_total > 0
-            || self.streams_with_pending_fin > 0
-            || self.streams_with_send_pending > 0
+    pub(crate) fn has_send_backlog(&self) -> bool {
+        self.streams_with_send_pending > 0
             || self.streams_with_send_stash > 0
             || self.streams_with_target_fin_pending > 0
     }

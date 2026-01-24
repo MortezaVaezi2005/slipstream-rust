@@ -164,7 +164,7 @@ pub async fn run_server(config: &ServerConfig) -> Result<i32, ServerError> {
                 path
             );
         } else {
-            tracing::info!("Loaded reset seed from {}", path);
+            tracing::debug!("Loaded reset seed from {}", path);
         }
         Some(seed)
     } else {
@@ -406,7 +406,7 @@ pub async fn run_server(config: &ServerConfig) -> Result<i32, ServerError> {
                     let cnx_id = slot.cnx as usize;
                     let metrics = unsafe { (&*state_ptr).stream_debug_metrics(cnx_id) };
                     if metrics.streams_total > 0
-                        && metrics.has_backlog()
+                        && metrics.has_send_backlog()
                         && loop_time.saturating_sub(last_flow_block_log_at)
                             >= FLOW_BLOCKED_LOG_INTERVAL_US
                     {
