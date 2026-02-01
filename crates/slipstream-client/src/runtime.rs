@@ -5,7 +5,7 @@ use self::path::{
     apply_path_mode, drain_path_events, fetch_path_quality, find_resolver_by_addr_mut,
     loop_burst_total, path_poll_burst_max,
 };
-use self::setup::{bind_tcp_listener, bind_udp_socket, compute_mtu, map_io};
+use self::setup::{bind_tcp_listener, bind_udp_socket, map_io};
 use crate::dns::{
     add_paths, expire_inflight_polls, handle_dns_response, maybe_report_debug,
     refresh_resolver_path, resolve_resolvers, resolver_mode_to_c, send_poll_queries,
@@ -69,7 +69,6 @@ fn drain_disconnected_commands(command_rx: &mut mpsc::UnboundedReceiver<Command>
 }
 
 pub async fn run_client(config: &ClientConfig<'_>) -> Result<i32, ClientError> {
-    let domain_len = config.domain.len();
     let mtu = slipstream_dns::max_payload_len_for_domain(config.domain)
         .map_err(|err| ClientError::new(err.to_string()))? as u32;
     let udp = bind_udp_socket().await?;
